@@ -3,7 +3,6 @@ import { createJob } from './requests';
 
 export const JobForm = props => {
   const [job, setJob] = useState({
-    companyId: 'SJV0-wdOM',
     title: '',
     description: ''
   });

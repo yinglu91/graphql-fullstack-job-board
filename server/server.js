@@ -23,17 +23,26 @@ app.use(
 // graphql - http://localhost:9000/graphql
 const typeDefs = gql(fs.readFileSync('./schema.graphql', { encoding: 'utf8' }));
 const resolvers = require('./resolvers');
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
+
+const context = ({ req }) => {
+  return { user: req.user && db.users.get(req.user.sub) };
+};
+
+const apolloServer = new ApolloServer({ typeDefs, resolvers, context });
 apolloServer.applyMiddleware({ app, path: '/graphql' });
 
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
+
   const user = db.users.list().find(user => user.email === email);
   if (!(user && user.password === password)) {
+    // TODO: saved encryted password!
     res.sendStatus(401);
     return;
   }
+
   const token = jwt.sign({ sub: user.id }, jwtSecret);
+
   res.send({ token });
 });
 

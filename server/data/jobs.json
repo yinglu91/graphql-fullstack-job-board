@@ -16,23 +16,5 @@
     "companyId": "SJV0-wdOM",
     "title": "Full-Stack Developer",
     "description": "We are looking for a Full-Stack Developer familiar with Node.js, Express, and React."
-  },
-  {
-    "id": "SyXNehfZU",
-    "title": "DevOps Engineer",
-    "description": "We need somebody who knows how to setup k8s",
-    "companyId": "SJV0-wdOM"
-  },
-  {
-    "id": "SyCcQhMWL",
-    "title": "k8s DevOps",
-    "description": "need someone who knows k8v well",
-    "companyId": "SJV0-wdOM"
-  },
-  {
-    "id": "HJnC72fWI",
-    "title": "k8s engineer",
-    "description": "know k8s",
-    "companyId": "SJV0-wdOM"
   }
 ]

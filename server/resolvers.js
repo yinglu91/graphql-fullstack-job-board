@@ -13,8 +13,13 @@ const Query = {
 };
 
 const Mutation = {
-  createJob: (root, { input }) => {
-    const id = db.jobs.create(input);
+  createJob: (root, { input }, { user }) => {
+    // check user auth
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+
+    const id = db.jobs.create({ ...input, companyId: user.companyId });
     return db.jobs.get(id);
   }
 };
@@ -29,3 +34,14 @@ const Job = {
 };
 
 module.exports = { Query, Mutation, Company, Job };
+
+/*
+context
+{ user:
+   { id: 'BJrp-DudG',
+     email: 'alice@facegle.io',
+     password: 'alice123',
+     companyId: 'HJRa-DOuG' },
+  _extensionStack:
+   GraphQLExtensionStack { extensions: [ [CacheControlExtension] ] } }
+   */
