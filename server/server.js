@@ -1,6 +1,5 @@
 const fs = require('fs');
 const { ApolloServer, gql } = require('apollo-server-express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
 const expressJwt = require('express-jwt');
@@ -13,7 +12,7 @@ const jwtSecret = Buffer.from('Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt', 'base64');
 const app = express();
 app.use(
   cors(),
-  bodyParser.json(),
+  express.json(),
   expressJwt({
     secret: jwtSecret,
     credentialsRequired: false
@@ -33,16 +32,18 @@ apolloServer.applyMiddleware({ app, path: '/graphql' });
 
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
+  console.log(email, password)
 
   const user = db.users.list().find(user => user.email === email);
   if (!(user && user.password === password)) {
     // TODO: saved encryted password!
     res.sendStatus(401);
+    console.log('login failed')
     return;
   }
 
   const token = jwt.sign({ sub: user.id }, jwtSecret);
-
+  console.log('login ok, token:', token)
   res.send({ token });
 });
 

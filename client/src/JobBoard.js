@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { JobList } from './JobList';
 // const { jobs } = require('./fake-data');
 import { loadJobs } from './requests';

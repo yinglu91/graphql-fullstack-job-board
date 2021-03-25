@@ -1,54 +1,54 @@
-import React, { Component } from 'react';
-import { login } from './auth';
+import { useState } from 'react'
+import { login } from './auth'
+import { useHistory } from 'react-router-dom'
 
-export class LoginForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {email: '', password: '', error: false};
+export const LoginForm = (props) => {
+  const [state, setState] = useState({ email: '', password: '', error: false })
+  const history = useHistory()
+  
+  const handleChange = (event) => {
+    const { name, value } = event.target
+
+    setState((preState) => ({...preState, [name]: value}))   // Dynamic Property
   }
 
-  handleChange(event) {
-    const {name, value} = event.target;
-    this.setState({[name]: value});
-  }
+  const handleClick = (event) => {
+    event.preventDefault()
 
-  handleClick(event) {
-    event.preventDefault();
-    const {email, password} = this.state;
+    const { email, password } = state
     login(email, password).then((ok) => {
       if (ok) {
-        this.props.onLogin();
+        props.onLogin();
+        history.push('/')
       } else {
-        this.setState({error: true});
+        setState({error: true})
       }
-    });
+    })
   }
 
-  render() {
-    const {email, password, error} = this.state;
-    return (
-      <form>
-        <div className="field">
-          <label className="label">Email</label>
-          <div className="control">
-            <input className="input" type="text" name="email" value={email}
-              onChange={this.handleChange.bind(this)} />
-          </div>
+  const { email, password, error } = state
+  return (
+    <form>
+      <div className="field">
+        <label className="label">Email</label>
+        <div className="control">
+          <input className="input" type="text" name="email" value={email}
+            onChange={handleChange} />
         </div>
-        <div className="field">
-          <label className="label">Password</label>
-          <div className="control">
-            <input className="input" type="password" name="password" value={password}
-              onChange={this.handleChange.bind(this)} />
-          </div>
+      </div>
+      <div className="field">
+        <label className="label">Password</label>
+        <div className="control">
+          <input className="input" type="password" name="password" value={password}
+            onChange={handleChange} />
         </div>
-        <div className="field">
-          <p className="help is-danger">{error && 'Invalid credentials'}</p>
-          <div className="control">
-            <button className="button is-link" onClick={this.handleClick.bind(this)}>Login</button>
-          </div>
+      </div>
+      <div className="field">
+        <p className="help is-danger">{error && 'Invalid credentials'}</p>
+        <div className="control">
+          <button className="button is-link" onClick={handleClick}>Login</button>
         </div>
-      </form>
-    );
-  }
+      </div>
+    </form>
+  )
 }

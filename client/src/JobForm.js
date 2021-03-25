@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom'
 import { createJob } from './requests';
 
 export const JobForm = props => {
+  const history = useHistory()
   const [job, setJob] = useState({
     title: '',
     description: ''
-  });
+  })
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -15,11 +17,11 @@ export const JobForm = props => {
   };
 
   const handleSubmit = event => {
-    event.preventDefault();
+    event.preventDefault()
 
     createJob(job).then(job => {
-      props.history.push(`/jobs/${job.id}`);
-    });
+      history.push(`/jobs/${job.id}`)
+    })
   };
 
   const { title, description } = job;
